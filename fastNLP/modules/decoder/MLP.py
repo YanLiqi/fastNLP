@@ -1,21 +1,23 @@
 import torch
 import torch.nn as nn
+
 from fastNLP.modules.utils import initial_parameter
 
 
 class MLP(nn.Module):
+    """Multilayer Perceptrons as a decoder
+
+    :param list size_layer: list of int, define the size of MLP layers.
+    :param str activation: str or function, the activation function for hidden layers.
+    :param str initial_method: the name of initialization method.
+    :param float dropout: the probability of dropout.
+
+    .. note::
+        There is no activation function applying on output layer.
+
+    """
+
     def __init__(self, size_layer, activation='relu', initial_method=None, dropout=0.0):
-        """Multilayer Perceptrons as a decoder
-
-        :param size_layer: list of int, define the size of MLP layers.
-        :param activation: str or function, the activation function for hidden layers.
-        :param initial_method: str, the name of init method.
-        :param dropout: float, the probability of dropout.
-
-        .. note::
-            There is no activation function applying on output layer.
-
-        """
         super(MLP, self).__init__()
         self.hiddens = nn.ModuleList()
         self.output = None
@@ -33,7 +35,7 @@ class MLP(nn.Module):
         }
         if activation in actives:
             self.hidden_active = actives[activation]
-        elif isinstance(activation, callable):
+        elif callable(activation):
             self.hidden_active = activation
         else:
             raise ValueError("should set activation correctly: {}".format(activation))

@@ -38,7 +38,7 @@ class EmbedLoader(BaseLoader):
 
         :param str emb_file: the pre-trained embedding file path
         :param str emb_type: the pre-trained embedding data format
-        :return dict embedding: `{str: np.array}`
+        :return: a dict of ``{str: np.array}``
         """
         if emb_type == 'glove':
             return EmbedLoader._load_glove(emb_file)
@@ -53,8 +53,9 @@ class EmbedLoader(BaseLoader):
         :param str emb_file: the pre-trained embedding file path.
         :param str emb_type: the pre-trained embedding format, support glove now
         :param Vocabulary vocab: a mapping from word to index, can be provided by user or built from pre-trained embedding
-        :return embedding_tensor: Tensor of shape (len(word_dict), emb_dim)
-                vocab: input vocab or vocab built by pre-train
+        :return (embedding_tensor, vocab):
+                embedding_tensor - Tensor of shape (len(word_dict), emb_dim);
+                vocab - input vocab or vocab built by pre-train
 
         """
         pretrain = EmbedLoader._load_pretrain(emb_file, emb_type)
@@ -74,10 +75,18 @@ class EmbedLoader(BaseLoader):
 
     @staticmethod
     def parse_glove_line(line):
-        line = list(filter(lambda w: len(w) > 0, line.strip().split(" ")))
+        line = line.split()
         if len(line) <= 2:
             raise RuntimeError("something goes wrong in parsing glove embedding")
-        return line[0], torch.Tensor(list(map(float, line[1:])))
+        return line[0], line[1:]
+
+    @staticmethod
+    def str_list_2_vec(line):
+        try:
+            return torch.Tensor(list(map(float, line)))
+        except Exception:
+            raise RuntimeError("something goes wrong in parsing glove embedding")
+
 
     @staticmethod
     def fast_load_embedding(emb_dim, emb_file, vocab):
@@ -87,7 +96,7 @@ class EmbedLoader(BaseLoader):
         :param int emb_dim: the dimension of the embedding. Should be the same as pre-trained embedding.
         :param str emb_file: the pre-trained embedding file path.
         :param Vocabulary vocab: a mapping from word to index, can be provided by user or built from pre-trained embedding
-        :return numpy.ndarray embedding_matrix:
+        :return embedding_matrix: numpy.ndarray
 
         """
         if vocab is None:
@@ -98,6 +107,7 @@ class EmbedLoader(BaseLoader):
             for line in f:
                 word, vector = EmbedLoader.parse_glove_line(line)
                 if word in vocab:
+                    vector = EmbedLoader.str_list_2_vec(vector)
                     if len(vector.shape) > 1 or emb_dim != vector.shape[0]:
                         raise ValueError("Pre-trained embedding dim is {}. Expect {}.".format(vector.shape, (emb_dim,)))
                     embedding_matrix[vocab[word]] = vector
