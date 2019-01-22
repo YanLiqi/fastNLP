@@ -18,8 +18,8 @@ class Transformer(torch.nn.Module):
 
     def __init__(self, embed_num,
                  embed_dim,
-                 num_classes,
                  kernel_nums=(3, 4, 5),
+                 hidden_units_num=512,
                  kernel_sizes=(3, 4, 5),
                  padding=0,
                  dropout=0.5):
@@ -37,8 +37,8 @@ class Transformer(torch.nn.Module):
         self.dropout = nn.Dropout(dropout)
         # self.fc = encoder.Linear(sum(kernel_nums), num_classes)
 
-        self.enc = encoder.TransformerEncoder(6, input_size=sum(kernel_nums), output_size=num_classes,key_size=10,value_size=10,num_atte=8)
-        self.dec = decoder.TransformerDecoder(6, input_size=sum(kernel_nums), output_size=num_classes,key_size=10,value_size=10,num_atte=8)
+        self.enc = encoder.TransformerEncoder(6, input_size=sum(kernel_nums), output_size=hidden_units_num,key_size=10,value_size=10,num_atte=8)
+        self.dec = decoder.TransformerDecoder(6, input_size=sum(kernel_nums), output_size=hidden_units_num,key_size=10,value_size=10,num_atte=8)
 
 
     def forward(self, word_seq, translated_seq):
