@@ -32,7 +32,7 @@ class Hyperparams:
     logdir = 'logdir'  # log directory
 
     # model
-    maxlen = 10  # Maximum number of words in a sentence. alias = T.
+    maxlen = 20  # Maximum number of words in a sentence. alias = T.
     # Feel free to increase this if you are ambitious.
     min_cnt = 20  # words whose occurred less than min_cnt are encoded as <UNK>.
     hidden_units = 512  # alias = C
@@ -193,20 +193,23 @@ if __name__ == '__main__':
 
 
     print(train_data[3])
+    print(len(train_data))
 
     de2idx, idx2de = load_de_vocab()
     en2idx, idx2en = load_en_vocab()
 
+    print(len(de2idx))
+    print(len(idx2de))
+    print(len(en2idx))
+    print(len(idx2en))
     # model = CNNText(embed_num=len(vocab), embed_dim=50, num_classes=5, padding=2, dropout=0.1)
-    model = Transformer(embed_num=len(de2idx), embed_dim=50, padding=2, dropout=0.1)
+    model = Transformer(embed_num=len(de2idx), embed_dim=Hyperparams.maxlen, padding=2, dropout=0.1, output_num=len(en2idx))
 
 
 
     trainer = Trainer(model=model,
                       train_data=train_data,
-                      dev_data=train_data,
                       loss=CrossEntropyLoss(),
-                      metrics=AccuracyMetric()
                       )
     trainer.train()
     print('Train finished!')
