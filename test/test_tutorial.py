@@ -12,7 +12,7 @@ from fastNLP.models import CNNText
 class TestTutorial(unittest.TestCase):
     def test_tutorial(self):
         # 从csv读取数据到DataSet
-        sample_path = "test/data_for_tests/tutorial_sample_dataset.csv"
+        sample_path = "./data_for_tests/tutorial_sample_dataset.csv"
         dataset = DataSet.read_csv(sample_path, headers=('raw_sentence', 'label'),
                                    sep='\t')
         print(len(dataset))
@@ -30,8 +30,8 @@ class TestTutorial(unittest.TestCase):
         dataset.apply(split_sent, new_field_name='words')
         # 增加长度信息
         dataset.apply(lambda x: len(x['words']), new_field_name='seq_len')
-        print(len(dataset))
-        print(dataset[0])
+        # print(len(dataset))
+        # print(dataset[0])
 
         # DataSet.drop(func)筛除数据
         dataset.drop(lambda x: x['seq_len'] <= 3)
@@ -45,8 +45,8 @@ class TestTutorial(unittest.TestCase):
 
         # 分出测试集、训练集
         test_data, train_data = dataset.split(0.5)
-        print(len(test_data))
-        print(len(train_data))
+        # print(len(test_data))
+        # print(len(train_data))
 
         # 构建词表, Vocabulary.add(word)
         vocab = Vocabulary(min_freq=2)
@@ -73,14 +73,14 @@ class TestTutorial(unittest.TestCase):
         copy_model = deepcopy(model)
         overfit_trainer = Trainer(train_data=test_data, model=copy_model,
                                   loss=CrossEntropyLoss(pred="output", target="label_seq"),
-                                  metrics=AccuracyMetric(pred="predict", target="label_seq"), n_epochs=10, batch_size=4,
-                                  dev_data=test_data, save_path="./save")
+                                  metrics=AccuracyMetric(pred="predict", target="label_seq"), n_epochs=10,
+                                  batch_size=4, dev_data=test_data, save_path="./save")
         overfit_trainer.train()
 
         trainer = Trainer(train_data=train_data, model=model,
                           loss=CrossEntropyLoss(pred="output", target="label_seq"),
-                          metrics=AccuracyMetric(pred="predict", target="label_seq"), n_epochs=10, batch_size=4,
-                          dev_data=test_data, save_path="./save")
+                          metrics=AccuracyMetric(pred="predict", target="label_seq"), n_epochs=10,
+                          batch_size=4, dev_data=test_data, save_path="./save")
         trainer.train()
         print('Train finished!')
 
@@ -89,3 +89,6 @@ class TestTutorial(unittest.TestCase):
                         batch_size=4)
         acc = tester.test()
         print(acc)
+
+if __name__ == "__main__":
+	TestTutorial().test_tutorial()

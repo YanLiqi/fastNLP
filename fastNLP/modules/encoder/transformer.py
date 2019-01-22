@@ -15,8 +15,9 @@ class TransformerEncoder(nn.Module):
                                      nn.Linear(output_size, output_size))
             self.norm2 = LayerNormalization(output_size)
 
-        def forward(self, input, seq_mask):
-            attention = self.atte(input)
+        # def forward(self, input, seq_mask):
+        def forward(self, input):
+            attention = self.atte(input, input, input)
             norm_atte = self.norm1(attention + input)
             output = self.ffn(norm_atte)
             return self.norm2(output + norm_atte)
@@ -25,5 +26,7 @@ class TransformerEncoder(nn.Module):
         super(TransformerEncoder, self).__init__()
         self.layers = nn.Sequential(*[self.SubLayer(**kargs) for _ in range(num_layers)])
 
-    def forward(self, x, seq_mask=None):
-        return self.layers(x, seq_mask)
+    # def forward(self, x, seq_mask=None):
+    def forward(self, x):
+        # return self.layers(x, seq_mask)
+        return self.layers(x)
