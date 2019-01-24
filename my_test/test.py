@@ -16,7 +16,7 @@ from fastNLP import Instance, DataSet, Vocabulary
 from fastNLP.models import CNNText
 from fastNLP.models import Transformer
 from fastNLP import Trainer, CrossEntropyLoss, AccuracyMetric, Tester
-from tensorboardX import SummaryWriter
+
 
 
 class Hyperparams:
