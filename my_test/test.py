@@ -16,6 +16,7 @@ from fastNLP import Instance, DataSet, Vocabulary
 from fastNLP.models import CNNText
 from fastNLP.models import Transformer
 from fastNLP import Trainer, CrossEntropyLoss, AccuracyMetric, Tester
+from tensorboardX import SummaryWriter
 
 
 class Hyperparams:
@@ -28,19 +29,17 @@ class Hyperparams:
 
     # training
     batch_size = 32  # alias = N
-    lr = 0.0001  # learning rate. In paper, learning rate is adjusted to the global step.
     logdir = 'logdir'  # log directory
 
     # model
-    maxlen = 10  # Maximum number of words in a sentence. alias = T.
+    maxlen = 5  # Maximum number of words in a sentence. alias = T.
     # Feel free to increase this if you are ambitious.
     min_cnt = 20  # words whose occurred less than min_cnt are encoded as <UNK>.
-    hidden_units = 128  # alias = C. In paper it's 512.
-    num_blocks = 2  # number of encoder/decoder blocks. In paper it's 6.
-    num_epochs = 5
+    hidden_units = 512  # alias = C. In paper it's 512.
+    num_blocks = 6  # number of encoder/decoder blocks. In paper it's 6.
+    num_epochs = 50
     num_heads = 8
     dropout_rate = 0.1
-    sinusoid = False  # If True, use sinusoid. If false, positional embedding.
 
 
 
@@ -94,7 +93,7 @@ def load_train_data():
                 codecs.open(Hyperparams.target_train, 'r', 'utf-8').read().split("\n") if line and line[0] != "<"]
 
     X, Y, Sources, Targets = create_data(de_sents, en_sents)
-    return X, Y
+    return X, Y, Sources, Targets
 
 
 def load_test_data():
@@ -109,26 +108,41 @@ def load_test_data():
                 line and line[:4] == "<seg"]
 
     X, Y, Sources, Targets = create_data(de_sents, en_sents)
-    return X, Sources, Targets  # (1064, 150)
+    return X, Y, Sources, Targets  # (1064, 150)
 
 
 def get_batch_data():
-    # Load data
-    X, Y = load_train_data()
+    # Load train data
+    X_train, Y_train, Sources_train, Targets_train = load_train_data()
 
     # calc total batch count
-    num_batch = len(X) // Hyperparams.batch_size
+    num_batch = len(X_train) // Hyperparams.batch_size
 
     i = 0
-    ds = DataSet()
-    for x in X:
-        instance = Instance(word_seq=x.tolist(), translated_seq=Y[i].tolist())
-        ds.append(instance)
+    ds_train = DataSet()
+    for x in X_train:
+        instance = Instance(word=Sources_train[i], traslated=Targets_train[i], word_seq=x.tolist(), translated_seq=Y_train[i].tolist())
+        ds_train.append(instance)
         i = i + 1
-    ds.set_input('word_seq', 'translated_seq')
-    ds.set_target('translated_seq')
+    ds_train.set_input('word_seq', 'translated_seq')
+    ds_train.set_target('translated_seq')
 
-    return ds
+    # Load test data
+    X_test, Y_test, Sources_test, Targets_test = load_test_data()
+
+    # calc total batch count
+    num_batch = len(X_test) // Hyperparams.batch_size
+
+    i = 0
+    ds_test = DataSet()
+    for x in X_test:
+        instance = Instance(word=Sources_test[i], traslated=Targets_test[i], word_seq=x.tolist(), translated_seq=Y_test[i].tolist())
+        ds_test.append(instance)
+        i = i + 1
+    ds_test.set_input('word_seq', 'translated_seq')
+    ds_test.set_target('translated_seq')
+
+    return ds_train, ds_test
 
 
 
@@ -137,18 +151,24 @@ if __name__ == '__main__':
 
     # Load vocabulary
 
-    train_data = get_batch_data()
+    train_data, dev_data = get_batch_data()
 
     de2idx, idx2de = load_de_vocab()
     en2idx, idx2en = load_en_vocab()
 
-    print(len(de2idx))
-    print(len(idx2de))
-    print(len(en2idx))
-    print(len(idx2en))
-    train_data, dev_data = train_data.split(0.3)
+    with open("vocab_de.txt", 'w') as f:
+        f.write(str(idx2de))
+    with open("vocab_en.txt", 'w') as f:
+        f.write(str(idx2en))
+
+    print("de_vocab_len:", len(de2idx))
+    print("en_vocab_len:", len(en2idx))
+
+    # train_data, dev_data = train_data.split(0.3)
     print(train_data[3])
-    print(len(train_data))
+    print(dev_data[3])
+    print("train_data:", len(train_data))
+    print("test_data:", len(dev_data))
     # model = CNNText(embed_num=len(vocab), embed_dim=50, num_classes=5, padding=2, dropout=0.1)
     model = Transformer(src_vocab_size=len(de2idx),
                         src_max_seq_len=Hyperparams.maxlen,
@@ -160,7 +180,6 @@ if __name__ == '__main__':
                         dropout=Hyperparams.dropout_rate)
 
     # print(model)
-
     trainer = Trainer(model=model,
                       train_data=train_data,
                       dev_data=dev_data,

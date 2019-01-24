@@ -8,6 +8,7 @@ import numpy as np
 import fastNLP.modules.encoder as encoder
 import fastNLP.modules.decoder as decoder
 from fastNLP.modules.aggregator import PositionalEncoding
+from tensorboardX import SummaryWriter
 
 class Transformer(torch.nn.Module):
     """
@@ -70,11 +71,11 @@ class Transformer(torch.nn.Module):
         # x = self.embed(word_seq)  # [N,L] -> [N,L,C]
         # x = self.conv_pool(x)  # [N,L,C] -> [N,C]
         x = self.src_seq_embedding(word_seq)
-        x_len = [[self.src_max_seq_len] for seq in word_seq]
-        # x += self.src_pos_embedding(x_len)
+        x_len = [self.src_max_seq_len for seq in word_seq]
+        x += self.src_pos_embedding(x_len)
         y = self.tgt_seq_embedding(translated_seq)
-        y_len = [[self.tgt_max_seq_len] for seq in translated_seq]
-        # y += self.tgt_pos_embedding(y_len)
+        y_len = [self.tgt_max_seq_len for seq in translated_seq]
+        y += self.tgt_pos_embedding(y_len)
 
         x = self.src_dropout(x)
         y = self.tgt_dropout(y)
@@ -96,7 +97,10 @@ class Transformer(torch.nn.Module):
         :param word_seq: torch.LongTensor, [batch_size, seq_len]
         :return predict: dict of torch.LongTensor, [batch_size, seq_len]
         """
+        print("input:", word_seq)
+        print("target:", translated_seq)
         output = self(word_seq, translated_seq)
         _, predict = output['pred'].max(dim=1)
+        print("predict:", predict)
         return {'pred': predict}
 
