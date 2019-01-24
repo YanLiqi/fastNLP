@@ -182,7 +182,7 @@ if __name__ == '__main__':
     trainer = Trainer(model=model,
                       train_data=train_data,
                       dev_data=dev_data,
-                      loss=CrossEntropyLoss(padding_idx=0),
+                      loss=CrossEntropyLoss(),
                       batch_size=Hyperparams.batch_size,
                       save_path='./checkpoint',
                       n_epochs=Hyperparams.num_epochs,
