@@ -17,17 +17,24 @@ class TransformerDecoder(nn.Module):
                                      nn.Linear(output_size, output_size))
             self.norm3 = LayerNormalization(output_size)
 
-        def forward(self, input, dec, seq_mask):
-            attention1 = self.atte1(input)
-            norm_atte1 = self.norm1(attention1 + input)
-            attention2 = self.atte2(dec, dec, input)
+        def forward(self, y, x, seq_mask=None):
+            attention1 = self.atte1(y, y, y)
+            norm_atte1 = self.norm1(attention1 + y)
+            attention2 = self.atte2(x, x, y)
             norm_atte2 = self.norm2(attention2 + norm_atte1)
             output = self.ffn(norm_atte2)
             return self.norm2(output + norm_atte2)
 
-    def __init__(self, num_layers, **kargs):
+    def __init__(self, num_layers, **kwargs):
         super(TransformerDecoder, self).__init__()
-        self.layers = nn.Sequential(*[self.SubLayer(**kargs) for _ in range(num_layers)])
+        # self.layers = nn.Sequential(*[self.SubLayer(**kwargs) for _ in range(num_layers)])
+        self.decoder_layers = nn.ModuleList([self.SubLayer(**kwargs) for _ in range(num_layers)])
 
-    def forward(self, x, seq_mask=None):
-        return self.layers(x, seq_mask)
+    def forward(self, y, x, seq_mask=None):
+        # return self.layers(y, x=x, seq_mask=seq_mask)
+        for decoder in self.decoder_layers:
+            y = decoder(y, x, seq_mask)
+
+        return y
+
+

@@ -45,7 +45,7 @@ class DotAtte(nn.Module):
 
 
 class MultiHeadAtte(nn.Module):
-    def __init__(self, input_size, output_size, key_size, value_size, num_atte):
+    def __init__(self, input_size=512, output_size=512, key_size=64, value_size=64, num_atte=8):
         super(MultiHeadAtte, self).__init__()
         self.in_linear = nn.ModuleList()
         for i in range(num_atte * 3):

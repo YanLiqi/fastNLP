@@ -8,3 +8,4 @@ from .attention import Attention
 from .attention import Bi_Attention
 from .self_attention import SelfAttention
 
+from .positional_encoding import PositionalEncoding

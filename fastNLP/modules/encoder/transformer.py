@@ -22,9 +22,9 @@ class TransformerEncoder(nn.Module):
             output = self.ffn(norm_atte)
             return self.norm2(output + norm_atte)
 
-    def __init__(self, num_layers, **kargs):
+    def __init__(self, num_layers, **kwargs):
         super(TransformerEncoder, self).__init__()
-        self.layers = nn.Sequential(*[self.SubLayer(**kargs) for _ in range(num_layers)])
+        self.layers = nn.Sequential(*[self.SubLayer(**kwargs) for _ in range(num_layers)])
 
     # def forward(self, x, seq_mask=None):
     def forward(self, x):

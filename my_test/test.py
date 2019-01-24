@@ -15,7 +15,7 @@ sys.path.append("../")
 from fastNLP import Instance, DataSet, Vocabulary
 from fastNLP.models import CNNText
 from fastNLP.models import Transformer
-from fastNLP import Trainer, CrossEntropyLoss, AccuracyMetric
+from fastNLP import Trainer, CrossEntropyLoss, AccuracyMetric, Tester
 
 
 class Hyperparams:
@@ -32,12 +32,12 @@ class Hyperparams:
     logdir = 'logdir'  # log directory
 
     # model
-    maxlen = 20  # Maximum number of words in a sentence. alias = T.
+    maxlen = 10  # Maximum number of words in a sentence. alias = T.
     # Feel free to increase this if you are ambitious.
     min_cnt = 20  # words whose occurred less than min_cnt are encoded as <UNK>.
-    hidden_units = 512  # alias = C
-    num_blocks = 6  # number of encoder/decoder blocks
-    num_epochs = 20
+    hidden_units = 128  # alias = C. In paper it's 512.
+    num_blocks = 2  # number of encoder/decoder blocks. In paper it's 6.
+    num_epochs = 5
     num_heads = 8
     dropout_rate = 0.1
     sinusoid = False  # If True, use sinusoid. If false, positional embedding.
@@ -125,75 +125,19 @@ def get_batch_data():
         instance = Instance(word_seq=x.tolist(), translated_seq=Y[i].tolist())
         ds.append(instance)
         i = i + 1
-    ds.set_input('word_seq','translated_seq')
+    ds.set_input('word_seq', 'translated_seq')
     ds.set_target('translated_seq')
-    """
-    # Convert to tensor
-    X = tf.convert_to_tensor(X, tf.int32)
-    Y = tf.convert_to_tensor(Y, tf.int32)
 
-    # Create Queues
-    input_queues = tf.train.slice_input_producer([X, Y])
-
-    # create batch queues
-    x, y = tf.train.shuffle_batch(input_queues,
-                                  num_threads=8,
-                                  batch_size=Hyperparams.batch_size,
-                                  capacity=Hyperparams.batch_size * 64,
-                                  min_after_dequeue=Hyperparams.batch_size * 32,
-                                  allow_smaller_final_batch=False)
-
-    return x, y, num_batch  # (N, T), (N, T), ()
-    """
     return ds
 
 
 
 
 if __name__ == '__main__':
-    """
-    data_path = "../tutorials/sample_data/tutorial_sample_dataset.csv"
-    ds = DataSet.read_csv(data_path, headers=('raw_sentence', 'label'), sep='\t') 
-    
-    # 将所有数字转为小写
-    ds.apply(lambda x: x['raw_sentence'].lower(), new_field_name='raw_sentence')
-    # label转int
-    ds.apply(lambda x: int(x['label']), new_field_name='label_seq', is_target=True)
-
-
-    def split_sent(ins):
-        return ins['raw_sentence'].split()
-
-
-    ds.apply(split_sent, new_field_name='words', is_input=True)
-
-    # 分割训练集/验证集
-    train_data, dev_data = ds.split(0.3)
-    print("Train size: ", len(train_data))
-    print("Test size: ", len(dev_data))
-
-    
-    vocab = Vocabulary(min_freq=2)
-    train_data.apply(lambda x: [vocab.add(word) for word in x['words']])
-
-    # index句子, Vocabulary.to_index(word)
-    train_data.apply(lambda x: [vocab.to_index(word) for word in x['words']], new_field_name='word_seq', is_input=True)
-    dev_data.apply(lambda x: [vocab.to_index(word) for word in x['words']], new_field_name='word_seq', is_input=True)
-
-    train_data.apply(lambda x: [vocab.to_index(word) for word in x['words']], new_field_name='translated_seq',
-                     is_input=True)
-    dev_data.apply(lambda x: [vocab.to_index(word) for word in x['words']], new_field_name='translated_seq',
-                   is_input=True)
-
-    """
 
     # Load vocabulary
 
     train_data = get_batch_data()
-
-
-    print(train_data[3])
-    print(len(train_data))
 
     de2idx, idx2de = load_de_vocab()
     en2idx, idx2en = load_en_vocab()
@@ -202,17 +146,37 @@ if __name__ == '__main__':
     print(len(idx2de))
     print(len(en2idx))
     print(len(idx2en))
+    train_data, dev_data = train_data.split(0.3)
+    print(train_data[3])
+    print(len(train_data))
     # model = CNNText(embed_num=len(vocab), embed_dim=50, num_classes=5, padding=2, dropout=0.1)
-    model = Transformer(embed_num=len(de2idx), embed_dim=Hyperparams.maxlen, padding=2, dropout=0.1, output_num=len(en2idx))
+    model = Transformer(src_vocab_size=len(de2idx),
+                        src_max_seq_len=Hyperparams.maxlen,
+                        tgt_vocab_size=len(en2idx),
+                        tgt_max_seq_len=Hyperparams.maxlen,
+                        num_layers=Hyperparams.num_blocks,
+                        model_dim=Hyperparams.hidden_units,
+                        num_heads=Hyperparams.num_heads,
+                        dropout=Hyperparams.dropout_rate)
 
-
+    # print(model)
 
     trainer = Trainer(model=model,
                       train_data=train_data,
+                      dev_data=dev_data,
                       loss=CrossEntropyLoss(),
+                      batch_size=Hyperparams.batch_size,
+                      save_path='./checkpoint',
+                      n_epochs=Hyperparams.num_epochs,
+                      metrics=AccuracyMetric()
                       )
-    trainer.train()
+    result = trainer.train()
+    print(result)
     print('Train finished!')
+    tester = Tester(data=dev_data, model=model, metrics=AccuracyMetric(),
+                    batch_size=4)
+    acc = tester.test()
+    print(acc)
 
 
 
