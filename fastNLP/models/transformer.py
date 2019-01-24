@@ -60,7 +60,7 @@ class Transformer(torch.nn.Module):
                                               num_atte=num_heads)
 
         self.linear = encoder.Linear(model_dim, tgt_vocab_size)
-        # self.softmax = nn.Softmax(dim=1)
+        self.softmax = nn.Softmax(dim=1)
 
     def forward(self, word_seq, translated_seq):
         """
@@ -87,7 +87,7 @@ class Transformer(torch.nn.Module):
         # y = self.dropout(y)
         x = self.dec(y, x)
         x = self.linear(x)
-        # x = self.softmax(x)
+        x = self.softmax(x)
         x = x.permute(0, 2, 1)
         return {'pred': x}
 
