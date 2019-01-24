@@ -20,7 +20,7 @@ class TransformerDecoder(nn.Module):
         def forward(self, y, x, seq_mask=None):
             attention1 = self.atte1(y, y, y)
             norm_atte1 = self.norm1(attention1 + y)
-            attention2 = self.atte2(x, x, y)
+            attention2 = self.atte2(y, x, x)
             norm_atte2 = self.norm2(attention2 + norm_atte1)
             output = self.ffn(norm_atte2)
             return self.norm2(output + norm_atte2)
