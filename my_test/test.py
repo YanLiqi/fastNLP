@@ -18,7 +18,6 @@ from fastNLP.models import Transformer
 from fastNLP import Trainer, CrossEntropyLoss, AccuracyMetric, Tester
 
 
-
 class Hyperparams:
     '''Hyperparameters'''
     # data
@@ -35,8 +34,8 @@ class Hyperparams:
     maxlen = 5  # Maximum number of words in a sentence. alias = T.
     # Feel free to increase this if you are ambitious.
     min_cnt = 20  # words whose occurred less than min_cnt are encoded as <UNK>.
-    hidden_units = 512  # alias = C. In paper it's 512.
-    num_blocks = 6  # number of encoder/decoder blocks. In paper it's 6.
+    hidden_units = 128  # alias = C. In paper it's 512.
+    num_blocks = 2  # number of encoder/decoder blocks. In paper it's 6.
     num_epochs = 50
     num_heads = 8
     dropout_rate = 0.1
@@ -68,8 +67,8 @@ def create_data(source_sents, target_sents):
     # Index
     x_list, y_list, Sources, Targets = [], [], [], []
     for source_sent, target_sent in zip(source_sents, target_sents):
-        x = [de2idx.get(word, 1) for word in (source_sent + u" </S>").split()]  # 1: OOV, </S>: End of Text
-        y = [en2idx.get(word, 1) for word in (target_sent + u" </S>").split()]
+        x = [de2idx.get(word, 1) for word in source_sent.split()]  # 1: OOV, </S>: End of Text
+        y = [en2idx.get(word, 1) for word in target_sent.split()]
         if max(len(x), len(y)) <= Hyperparams.maxlen:
             x_list.append(np.array(x))
             y_list.append(np.array(y))
@@ -183,7 +182,7 @@ if __name__ == '__main__':
     trainer = Trainer(model=model,
                       train_data=train_data,
                       dev_data=dev_data,
-                      loss=CrossEntropyLoss(),
+                      loss=CrossEntropyLoss(padding_idx=0),
                       batch_size=Hyperparams.batch_size,
                       save_path='./checkpoint',
                       n_epochs=Hyperparams.num_epochs,
