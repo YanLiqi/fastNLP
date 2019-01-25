@@ -11,7 +11,7 @@ fr = open("vocab_en.txt", 'r')
 vocab_en = eval(fr.read())
 # print(vocab_en[9])
 
-fr = open("test_01/result.txt", 'r')
+fr = open("test_03/result.txt", 'r')
 result = fr.read()
 result = result.split('\n')
 
@@ -19,7 +19,7 @@ input_list = []
 target_list = []
 predict_list = []
 type = 1
-# fw = open("test_01/result_text.txt", 'w+')
+
 for line in result:
     line_seq = re.sub("\D", ",", line)
     num = 0
@@ -60,7 +60,7 @@ for line in result:
         predict_list.append(words)
         # fw.write("predict: %s \n" % words)
 
-fw = open("test_01/result_text.txt", 'w+')
+fw = open("test_03/result_text.txt", 'w+')
 i = 0
 # print(input_list)
 # print(target_list)
