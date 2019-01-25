@@ -10,7 +10,7 @@ def sequence_mask(seq):
     batch_size = shape[0]
     seq_len = shape[1]
     mask = torch.triu(torch.ones((seq_len, seq_len), dtype=torch.uint8),
-                    diagonal=1)
+                    diagonal=0)
     mask = mask.unsqueeze(0).expand(batch_size, -1, -1)  # [B, L, L]
     return mask
 
