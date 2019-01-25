@@ -1,0 +1,246 @@
+step:49: loss:8.75556
+step:99: loss:8.50587
+step:149: loss:8.46666
+step:199: loss:8.45476
+step:249: loss:8.45829
+step:299: loss:8.45887
+step:349: loss:8.45556
+step:399: loss:8.44595
+step:449: loss:8.45332
+Evaluation at Epoch 1/50. Step:484/24200. AccuracyMetric: acc=0.776923
+step:499: loss:8.44685
+step:549: loss:8.43645
+step:599: loss:8.43172
+step:649: loss:8.43047
+step:699: loss:8.41838
+step:749: loss:8.42127
+step:799: loss:8.42776
+step:849: loss:8.44028
+step:899: loss:8.44256
+step:949: loss:8.56910
+Evaluation at Epoch 2/50. Step:968/24200. AccuracyMetric: acc=0.430769
+step:999: loss:8.93525
+step:1049: loss:9.07712
+step:1099: loss:9.07876
+step:1149: loss:9.07874
+step:1199: loss:9.07872
+step:1249: loss:9.07868
+step:1299: loss:9.07861
+step:1349: loss:9.07841
+step:1399: loss:9.07855
+step:1449: loss:9.07529
+Evaluation at Epoch 3/50. Step:1452/24200. AccuracyMetric: acc=0.303077
+step:1499: loss:9.07868
+step:1549: loss:9.07722
+step:1599: loss:9.07682
+step:1649: loss:9.07875
+step:1699: loss:9.07874
+step:1749: loss:9.07872
+step:1799: loss:9.07863
+step:1849: loss:9.07820
+step:1899: loss:9.07865
+Evaluation at Epoch 4/50. Step:1936/24200. AccuracyMetric: acc=0.295385
+step:1949: loss:9.07740
+step:1999: loss:9.07316
+step:2049: loss:9.07858
+step:2099: loss:9.07700
+step:2149: loss:8.98850
+step:2199: loss:8.93932
+step:2249: loss:8.98526
+step:2299: loss:9.01774
+step:2349: loss:9.07691
+step:2399: loss:9.07875
+Evaluation at Epoch 5/50. Step:2420/24200. AccuracyMetric: acc=0.126154
+step:2449: loss:9.07875
+step:2499: loss:9.07876
+step:2549: loss:9.07875
+step:2599: loss:9.07875
+step:2649: loss:9.07875
+step:2699: loss:9.07875
+step:2749: loss:9.07875
+step:2799: loss:9.07875
+step:2849: loss:9.07876
+step:2899: loss:9.07876
+Evaluation at Epoch 6/50. Step:2904/24200. AccuracyMetric: acc=0.244615
+step:2949: loss:9.07876
+step:2999: loss:9.07876
+step:3049: loss:9.07876
+step:3099: loss:9.07876
+step:3149: loss:9.07876
+step:3199: loss:9.07875
+step:3249: loss:9.07875
+step:3299: loss:9.07875
+step:3349: loss:9.07875
+Evaluation at Epoch 7/50. Step:3388/24200. AccuracyMetric: acc=0.287692
+step:3399: loss:9.07875
+step:3449: loss:9.07876
+step:3499: loss:9.07876
+step:3549: loss:9.07876
+step:3599: loss:9.07876
+step:3649: loss:9.07876
+step:3699: loss:9.07876
+step:3749: loss:9.07876
+step:3799: loss:9.07875
+step:3849: loss:9.07875
+Evaluation at Epoch 8/50. Step:3872/24200. AccuracyMetric: acc=0.152308
+step:3899: loss:9.07875
+step:3949: loss:9.07874
+step:3999: loss:9.07869
+step:4049: loss:9.07853
+step:4099: loss:9.07806
+step:4149: loss:9.07208
+step:4199: loss:9.01185
+step:4249: loss:8.93602
+step:4299: loss:8.92662
+step:4349: loss:8.92815
+Evaluation at Epoch 9/50. Step:4356/24200. AccuracyMetric: acc=0.236923
+step:4399: loss:8.93689
+step:4449: loss:8.91861
+step:4499: loss:8.91882
+step:4549: loss:8.90171
+step:4599: loss:8.90999
+step:4649: loss:8.90081
+step:4699: loss:8.89781
+step:4749: loss:8.91058
+step:4799: loss:8.89626
+Evaluation at Epoch 10/50. Step:4840/24200. AccuracyMetric: acc=0.16
+step:4849: loss:8.89461
+step:4899: loss:8.89027
+step:4949: loss:8.88194
+step:4999: loss:8.89935
+step:5049: loss:8.89729
+step:5099: loss:8.91762
+step:5149: loss:8.90619
+step:5199: loss:8.89580
+step:5249: loss:8.89696
+step:5299: loss:8.88591
+Evaluation at Epoch 11/50. Step:5324/24200. AccuracyMetric: acc=0.138462
+step:5349: loss:8.89152
+step:5399: loss:8.91068
+step:5449: loss:8.88851
+step:5499: loss:8.88834
+step:5549: loss:8.88138
+step:5599: loss:8.88502
+step:5649: loss:8.88023
+step:5699: loss:8.88346
+step:5749: loss:8.87923
+step:5799: loss:8.88905
+Evaluation at Epoch 12/50. Step:5808/24200. AccuracyMetric: acc=0.170769
+step:5849: loss:8.88318
+step:5899: loss:8.87664
+step:5949: loss:8.88369
+step:5999: loss:8.88153
+step:6049: loss:8.88153
+step:6099: loss:8.88839
+step:6149: loss:8.88554
+step:6199: loss:8.87945
+step:6249: loss:8.89215
+Evaluation at Epoch 13/50. Step:6292/24200. AccuracyMetric: acc=0.167692
+step:6299: loss:8.88595
+step:6349: loss:8.89923
+step:6399: loss:8.89695
+step:6449: loss:8.89280
+step:6499: loss:8.88820
+step:6549: loss:8.90085
+step:6599: loss:8.91295
+step:6649: loss:8.91371
+step:6699: loss:8.90449
+step:6749: loss:8.89733
+Evaluation at Epoch 14/50. Step:6776/24200. AccuracyMetric: acc=0.138462
+step:6799: loss:8.89671
+step:6849: loss:8.89323
+step:6899: loss:8.89655
+step:6949: loss:8.89954
+step:6999: loss:8.90307
+step:7049: loss:8.91744
+step:7099: loss:8.92022
+step:7149: loss:8.94494
+step:7199: loss:8.91320
+step:7249: loss:8.90129
+Evaluation at Epoch 15/50. Step:7260/24200. AccuracyMetric: acc=0.130769
+step:7299: loss:8.90465
+step:7349: loss:8.90712
+step:7399: loss:8.89632
+step:7449: loss:8.89436
+step:7499: loss:8.91512
+step:7549: loss:8.91864
+step:7599: loss:8.89255
+step:7649: loss:8.89244
+step:7699: loss:8.89298
+Evaluation at Epoch 16/50. Step:7744/24200. AccuracyMetric: acc=0.147692
+step:7749: loss:8.88361
+step:7799: loss:8.88465
+step:7849: loss:8.88524
+step:7899: loss:8.88358
+step:7949: loss:8.88711
+step:7999: loss:8.88545
+step:8049: loss:8.89238
+step:8099: loss:8.88563
+step:8149: loss:8.88261
+step:8199: loss:8.88966
+Evaluation at Epoch 17/50. Step:8228/24200. AccuracyMetric: acc=0.124615
+step:8249: loss:8.88974
+step:8299: loss:8.89090
+step:8349: loss:8.89650
+step:8399: loss:8.92206
+step:8449: loss:8.96411
+step:8499: loss:9.02278
+step:8549: loss:9.05441
+step:8599: loss:8.96697
+step:8649: loss:9.07817
+step:8699: loss:9.07801
+Evaluation at Epoch 18/50. Step:8712/24200. AccuracyMetric: acc=0.270769
+step:8749: loss:9.07746
+step:8799: loss:9.07640
+step:8849: loss:9.07471
+step:8899: loss:9.07695
+step:8949: loss:9.07102
+step:8999: loss:9.01490
+step:9049: loss:8.92969
+step:9099: loss:8.91863
+step:9149: loss:8.92314
+Evaluation at Epoch 19/50. Step:9196/24200. AccuracyMetric: acc=0.141538
+step:9199: loss:8.90689
+step:9249: loss:8.92054
+step:9299: loss:8.90385
+step:9349: loss:8.88898
+step:9399: loss:8.88042
+step:9449: loss:8.92204
+step:9499: loss:8.90301
+step:9549: loss:8.89841
+step:9599: loss:8.88308
+step:9649: loss:8.88907
+Evaluation at Epoch 20/50. Step:9680/24200. AccuracyMetric: acc=0.172308
+step:9699: loss:8.88851
+step:9749: loss:8.89955
+step:9799: loss:8.88486
+step:9849: loss:8.89976
+step:9899: loss:8.90577
+step:9949: loss:8.88656
+step:9999: loss:8.92607
+step:10049: loss:8.91144
+step:10099: loss:8.90784
+step:10149: loss:8.91072
+Evaluation at Epoch 21/50. Step:10164/24200. AccuracyMetric: acc=0.244615
+step:10199: loss:8.92251
+step:10249: loss:8.91839
+step:10299: loss:8.92744
+step:10349: loss:8.91759
+step:10399: loss:8.91223
+step:10449: loss:8.99806
+step:10499: loss:9.06683
+step:10549: loss:9.07875
+step:10599: loss:9.07877
+Evaluation at Epoch 22/50. Step:10648/24200. AccuracyMetric: acc=0.136923
+step:10649: loss:9.07877
+step:10699: loss:9.07877
+step:10749: loss:9.07876
+step:10799: loss:9.07878
+step:10849: loss:9.07878
+step:10899: loss:9.07877
+step:10949: loss:9.07874
+step:10999: loss:9.07875
+step:11049: loss:9.07874
+step:11099: loss:9.07874
+Evaluation at Epoch 23/50. Step:11132/24200. AccuracyMetric: acc=0.169231
+step:11149: loss:9.07874

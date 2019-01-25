@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
-fr = open("test_01/log.txt", 'r')
+fr = open("log.txt", 'r')
 lines = fr.read().split('\n')
 steps = []
 losses = []
