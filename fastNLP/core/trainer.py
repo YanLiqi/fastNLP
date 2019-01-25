@@ -269,11 +269,16 @@ class Trainer(object):
                         if self.use_tqdm:
                             print_output = "loss:{0:<6.5f}".format(avg_loss / self.print_every)
                             pbar.update(self.print_every)
+
+                            with open("log.txt", 'a+') as f:
+                                f.write('step:' + self.step.__str__() + ': ' + print_output + '\n')
+
                         else:
                             end = time.time()
                             diff = timedelta(seconds=round(end - start))
                             print_output = "[epoch: {:>3} step: {:>4}] train loss: {:>4.6} time: {}".format(
                                 epoch, self.step, avg_loss, diff)
+
                         pbar.set_postfix_str(print_output)
                         avg_loss = 0
                     self.step += 1
@@ -288,6 +293,9 @@ class Trainer(object):
                                                                                     total_steps) + \
                                    self.tester._format_eval_results(eval_res)
                         pbar.write(eval_str)
+
+                        with open("log.txt", 'a+') as f:
+                            f.write(eval_str + '\n')
 
                 # if self.validate_every < 0 and self.dev_data:
                 #     eval_res = self._do_validation(epoch=epoch, step=self.step)

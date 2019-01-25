@@ -1,7 +1,18 @@
 from torch import nn
-
+import torch
 from ..aggregator.attention import MultiHeadAtte
 from ..other_modules import LayerNormalization
+
+
+def sequence_mask(seq):
+    seq = seq.detach().numpy()
+    shape = seq.shape
+    batch_size = shape[0]
+    seq_len = shape[1]
+    mask = torch.triu(torch.ones((seq_len, seq_len), dtype=torch.uint8),
+                    diagonal=1)
+    mask = mask.unsqueeze(0).expand(batch_size, -1, -1)  # [B, L, L]
+    return mask
 
 
 class TransformerDecoder(nn.Module):
@@ -20,7 +31,7 @@ class TransformerDecoder(nn.Module):
         def forward(self, y, x, seq_mask=None):
             attention1 = self.atte1(y, y, y)
             norm_atte1 = self.norm1(attention1 + y)
-            attention2 = self.atte2(y, x, x)
+            attention2 = self.atte2(y, x, x, seq_mask)
             norm_atte2 = self.norm2(attention2 + norm_atte1)
             output = self.ffn(norm_atte2)
             return self.norm2(output + norm_atte2)
@@ -32,6 +43,7 @@ class TransformerDecoder(nn.Module):
 
     def forward(self, y, x, seq_mask=None):
         # return self.layers(y, x=x, seq_mask=seq_mask)
+        seq_mask = sequence_mask(y)
         for decoder in self.decoder_layers:
             y = decoder(y, x, seq_mask)
 

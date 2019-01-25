@@ -3,6 +3,7 @@ import math
 import torch
 import torch.nn.functional as F
 from torch import nn
+import numpy as np
 
 from fastNLP.modules.utils import mask_softmax
 
@@ -41,6 +42,9 @@ class DotAtte(nn.Module):
         if seq_mask is not None:
             output.masked_fill_(seq_mask.lt(1), -float('inf'))
         output = nn.functional.softmax(output, dim=2)
+        output = output.detach().numpy()
+        output[np.isnan(output)] = 0
+        output = torch.Tensor(output)
         return torch.matmul(output, V)
 
 

@@ -33,9 +33,9 @@ class Hyperparams:
     # model
     maxlen = 5  # Maximum number of words in a sentence. alias = T.
     # Feel free to increase this if you are ambitious.
-    min_cnt = 20  # words whose occurred less than min_cnt are encoded as <UNK>.
+    min_cnt = 50  # words whose occurred less than min_cnt are encoded as <UNK>.
     hidden_units = 128  # alias = C. In paper it's 512.
-    num_blocks = 2  # number of encoder/decoder blocks. In paper it's 6.
+    num_blocks = 3  # number of encoder/decoder blocks. In paper it's 6.
     num_epochs = 50
     num_heads = 8
     dropout_rate = 0.1
@@ -189,12 +189,15 @@ if __name__ == '__main__':
                       metrics=AccuracyMetric()
                       )
     result = trainer.train()
+    with open("log.txt", 'a+') as f:
+        f.write(result + '\n')
     print(result)
     print('Train finished!')
     tester = Tester(data=dev_data, model=model, metrics=AccuracyMetric(),
                     batch_size=4)
     acc = tester.test()
     print(acc)
+
 
 
 

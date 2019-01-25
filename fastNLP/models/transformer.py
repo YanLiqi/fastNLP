@@ -97,10 +97,14 @@ class Transformer(torch.nn.Module):
         :param word_seq: torch.LongTensor, [batch_size, seq_len]
         :return predict: dict of torch.LongTensor, [batch_size, seq_len]
         """
-        print("input:", word_seq)
-        print("target:", translated_seq)
+        # print("input:", word_seq)
+        # print("target:", translated_seq)
         output = self(word_seq, translated_seq)
         _, predict = output['pred'].max(dim=1)
-        print("predict:", predict)
+        # print("predict:", predict)
+        with open("result.txt", 'a+') as f:
+            f.write("input: %s \n" % word_seq)
+            f.write("target:%s \n" % translated_seq)
+            f.write("predict:%s \n" % predict)
         return {'pred': predict}
 
